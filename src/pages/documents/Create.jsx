@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { createDocument, fetchExternalProviders } from "../../redux";
+import { createDocument, fetchDocumentTypes } from "../../redux";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -30,7 +30,7 @@ const Create = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchExternalProviders());
+    dispatch(fetchDocumentTypes());
     showSucessMessage();
   }, []);
 
@@ -41,7 +41,7 @@ const Create = () => {
 
   const handleCreateDocument = (values) => {
     values.isExpired = false;
-    values.status = "Active";
+    values.status = 0;
     values.tenantId = 2;
 
     dispatch(createDocument(values));
@@ -86,14 +86,14 @@ const Create = () => {
             </Form.Item>
 
             <Form.Item
-              label="Provider"
-              name="externalProviderId"
+              label="Type"
+              name="typeId"
               rules={[{ required: true, message: "Provider" }]}
             >
-              <Select defaultValue="Public" style={{ width: "50%" }}>
-                {_externalProviderReducer.externalProviders.map((option) => (
+              <Select defaultValue="Select Type" style={{ width: "50%" }}>
+                {_documentReducer.documenttype.map((option) => (
                   <Option key={option.id} value={option.id}>
-                    {option.companyName}
+                    {option.name}
                   </Option>
                 ))}
               </Select>
@@ -104,16 +104,6 @@ const Create = () => {
               name="name"
               rules={[
                 { required: true, message: "Please input Document Name" },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-
-            <Form.Item
-              label="Type"
-              name="type"
-              rules={[
-                { required: true, message: "Please input Document Type!" },
               ]}
             >
               <Input />
@@ -172,7 +162,23 @@ const Create = () => {
                 style={{ width: "50%" }}
               />
             </Form.Item>
-
+            <Form.Item
+              label="Review interval(in Month)"
+              name="reviewInterval"
+              rules={[
+                {
+                  required: false,
+                  message: "Please input Document Valid Period !",
+                },
+              ]}
+            >
+              <InputNumber
+                min={1}
+                max={365}
+                defaultValue={12}
+                style={{ width: "50%" }}
+              />
+            </Form.Item>
             <Form.Item
               label="AlertBefore"
               name="alertBefore"
@@ -190,7 +196,20 @@ const Create = () => {
                 style={{ width: "50%" }}
               />
             </Form.Item>
-
+            <Form.Item
+              label="Is Renewable"
+              name="isRenewable"
+              valuePropName="checked"
+            >
+              <Checkbox />
+            </Form.Item>
+            <Form.Item
+              label="Is Reviewable"
+              name="isReviewable"
+              valuePropName="checked"
+            >
+              <Checkbox />
+            </Form.Item>
             <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
               <Button
                 type="primary"

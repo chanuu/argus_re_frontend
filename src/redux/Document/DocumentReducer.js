@@ -1,6 +1,7 @@
 const initialState = {
   documents: [],
   document: [],
+  documenttype: [],
   createStatus: false,
   deleteStatus: false,
 };
@@ -19,6 +20,7 @@ const docuementReducer = (state = initialState, action) => {
       createStatus: true,
     };
   } else if (action.type == "GET_DOCUMENT_BY_ID_FULFILLED") {
+    console.log(action.payload);
     return {
       ...state,
       document: action.payload,
@@ -27,6 +29,11 @@ const docuementReducer = (state = initialState, action) => {
     return {
       ...state,
       documents: [...state.documents, action.payload],
+    };
+  } else if (action.type == "GET_DOCUMENT_TYPE_FULFILLED") {
+    return {
+      ...state,
+      documenttype: action.payload,
     };
   } else {
     return state;

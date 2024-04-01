@@ -21,6 +21,26 @@ export const fetchDocuments = () => {
   };
 };
 
+// get list of documents
+export const fetchDocumentTypes = () => {
+  return (dispatch) => {
+    dispatch({
+      type: "GET_DOCUMENT_TYPE",
+      payload: new Promise((resolve, reject) => {
+        Axios.get(`${API_PATH}documenttypes`, {
+          headers: { Authorization: "Bearer " + localStorage.getItem("Token") },
+        })
+          .then((res) => {
+            resolve(res.data);
+          })
+          .catch((err) => {
+            resolve([]);
+          });
+      }),
+    });
+  };
+};
+
 export const deleteDocuments = (document) => {
   return (dispatch) => {
     dispatch({
@@ -46,7 +66,7 @@ export const getDocumentById = (id) => {
     dispatch({
       type: "GET_DOCUMENT_BY_ID",
       payload: new Promise((resolve, reject) => {
-        Axios.get(`${API_PATH}Documents/?id=${id}`, {
+        Axios.get(`${API_PATH}Documents/${id}`, {
           headers: { Authorization: "Bearer " + localStorage.getItem("Token") },
         })
           .then((res) => {
@@ -65,7 +85,7 @@ export const createDocument = (newDoucment) => {
     dispatch({
       type: "CREATE_DOCUMENT",
       payload: new Promise((resolve, reject) => {
-        Axios.post(`${API_PATH}Document/Create/`, newDoucment, {
+        Axios.post(`${API_PATH}documents`, newDoucment, {
           headers: { Authorization: "Bearer " + localStorage.getItem("Token") },
         })
           .then((res) => {

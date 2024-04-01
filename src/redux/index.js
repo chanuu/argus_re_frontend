@@ -4,6 +4,7 @@ export {
   createDocument,
   fetchDocuments,
   getDocumentById,
+  fetchDocumentTypes,
 } from "./Document/DocumentAction";
 
 export {
