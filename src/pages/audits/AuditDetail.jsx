@@ -19,13 +19,13 @@ import { EyeIcon } from "../General/EyeIcon";
 import { EditIcon } from "../General/EditIcon";
 import { DeleteIcon } from "../General/DeleteIcon";
 import { Tooltip } from "@nextui-org/react";
-import { Routes, Route, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 
-import { getDocumentById, fetchExternalProviders } from "../../redux";
+import { getAuditById } from "../../redux";
 
-const Detail = () => {
+const AuditDetail = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   //format date using moment Js and render it in Anttable
   const getFormatDate = (date) => {
@@ -69,9 +69,9 @@ const Detail = () => {
   let { id } = useParams();
 
   useEffect(() => {
-    dispatch(getDocumentById(id));
+    dispatch(getAuditById(id));
   }, []);
-  const _documentReducer = useSelector((state) => state.documents);
+  const _auditReducer = useSelector((state) => state.audits);
 
   const columns = [
     {
@@ -148,7 +148,7 @@ const Detail = () => {
               <div className="text-md font-medium text-gray-900 p-3">
                 Doucment Name{" "}
                 <div className="text-gray-400">
-                  {_documentReducer.document.name}
+                  {_auditReducer.audit.name}
                 </div>
               </div>
             </Col>
@@ -158,7 +158,7 @@ const Detail = () => {
                 Type{" "}
                 <div className="text-gray-400">
                   {" "}
-                  {_documentReducer.document.name}{" "}
+                  {_auditReducer.audit.name}{" "}
                 </div>
               </div>
             </Col>
@@ -170,7 +170,7 @@ const Detail = () => {
                 Decription{" "}
                 <div className="text-gray-400">
                   {" "}
-                  {_documentReducer.document.description}
+                  {_auditReducer.audit.description}
                 </div>{" "}
               </div>
             </Col>
@@ -182,7 +182,7 @@ const Detail = () => {
                 Issue Date{" "}
                 <div className="text-gray-400">
                   {" "}
-                  {_documentReducer.document.issueDate}
+                  {_auditReducer.audit.issueDate}
                   <div />{" "}
                 </div>
               </div>
@@ -193,7 +193,7 @@ const Detail = () => {
                 AlertBefore{" "}
                 <div className="text-gray-400">
                   {" "}
-                  {_documentReducer.document.alertBefore}
+                  {_auditReducer.audit.alertBefore}
                 </div>{" "}
               </div>
             </Col>
@@ -205,7 +205,7 @@ const Detail = () => {
                 validPeriod{" "}
                 <div className="text-gray-400">
                   {" "}
-                  {_documentReducer.document.validPeriod}
+                  {_auditReducer.audit.validPeriod}
                 </div>{" "}
               </div>
             </Col>
@@ -216,7 +216,7 @@ const Detail = () => {
                 <div className="text-gray-400">
                   {" "}
                   <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300 p-3">
-                    {_documentReducer.document.status}
+                    {_auditReducer.audit.status}
                   </span>
                 </div>{" "}
               </div>
@@ -244,7 +244,7 @@ const Detail = () => {
               {" "}
               <div className="text-md font-medium text-gray-900 p-3">
                 <Table
-                  dataSource={_documentReducer.document.documentRenewal}
+                  dataSource={_auditReducer.document.documentRenewal}
                   columns={columns}
                 />
                 ;{" "}
@@ -324,4 +324,4 @@ const Detail = () => {
   );
 };
 
-export default Detail;
+export default AuditDetail;

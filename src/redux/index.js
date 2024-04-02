@@ -8,6 +8,12 @@ export {
 } from "./Document/DocumentAction";
 
 export {
+  createAudit,
+  fetchAudits,
+  getAuditById,
+} from "./Audit/AuditAction";
+
+export {
   fetchUsers,
   deleteUser,
   createUser,

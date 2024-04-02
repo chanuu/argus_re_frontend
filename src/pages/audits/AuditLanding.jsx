@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchDocuments, deleteDocuments } from "../../redux";
 import Button from "@mui/material/Button";
 
 import { Table, Popconfirm, Input, Space } from "antd";
@@ -13,13 +12,14 @@ import { Tooltip, Col, Row } from "@nextui-org/react";
 import { Header } from "../../components";
 import { SearchOutlined } from "@ant-design/icons";
 import moment from "moment";
+import { fetchAudits } from "../../redux";
 
-const Landing = () => {
+const AuditLanding = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(fetchDocuments());
+    dispatch(fetchAudits());
   }, []);
 
   const handleDelete = (doc) => {
@@ -98,32 +98,16 @@ const Landing = () => {
   });
   // column configuration
   const columns = [
-    {
-      title: "Code",
-      dataIndex: "code",
-      key: "code",
-    },
+   
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Type",
-      dataIndex: ["documentTypes", "name"],
-      key: "documentTypes.name",
-    },
-
-    {
-      title: "Issued Date",
-      dataIndex: "issueDate",
-      key: "issueDate",
-      render: (date) => getFormatDate(date),
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
+      title: "Frequancy",
+      dataIndex: "frequency",
+      key: "frequency",
     },
 
     {
@@ -145,7 +129,7 @@ const Landing = () => {
               <Tooltip content="Details">
                 <IconButton
                   onClick={() => {
-                    navigate(`/documents/${record.id}`);
+                    navigate(`/audits/${record.id}`);
                   }}
                 >
                   <EyeIcon size={20} fill="#979797" />
@@ -153,14 +137,14 @@ const Landing = () => {
               </Tooltip>
             </Col>
             <Col css={{ d: "flex" }}>
-              <Tooltip content="Edit Document">
+              <Tooltip content="Edit Audit">
                 <IconButton onClick={() => console.log("click")}>
                   <EditIcon size={20} fill="#979797" />
                 </IconButton>
               </Tooltip>
             </Col>
             <Col css={{ d: "flex" }}>
-              <Tooltip content="Delete Document" color="error">
+              <Tooltip content="Delete Audit" color="error">
                 <IconButton>
                   <DeleteIcon size={20} fill="#FF0080" />
                 </IconButton>
@@ -171,7 +155,8 @@ const Landing = () => {
     },
   ];
 
-  const _documentReducer = useSelector((state) => state.documents);
+  const _auditReducer = useSelector((state) => state.audits);
+  console.log('_auditReducer', _auditReducer);
 
   return (
     <div className=" m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
@@ -180,15 +165,15 @@ const Landing = () => {
         <Button
           variant="contained"
           onClick={() => {
-            navigate("/documents/create");
+            navigate("/audits/create");
           }}
         >
-          Create Document
+          Create Audit
         </Button>
       </div>
-      <Table dataSource={_documentReducer.documents} columns={columns} />;
+      <Table dataSource={_auditReducer.audits} columns={columns} />;
     </div>
   );
 };
 
-export default Landing;
+export default AuditLanding;
