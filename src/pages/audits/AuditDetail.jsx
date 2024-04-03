@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Col,
   Row,
@@ -6,13 +6,9 @@ import {
   Button,
   Modal,
   Form,
-  Input,
-  Typography,
   DatePicker,
-  Select,
   InputNumber,
 } from "antd";
-import { Header } from "../../components";
 
 import { IconButton } from "../General/IconButton";
 import { EyeIcon } from "../General/EyeIcon";
@@ -23,10 +19,11 @@ import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 
-import { getAuditById } from "../../redux";
+import { getAuditById, getBuyerById } from "../../redux";
 
 const AuditDetail = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  let { id } = useParams();
   //format date using moment Js and render it in Anttable
   const getFormatDate = (date) => {
     let _date = moment(new Date(date));
@@ -66,12 +63,16 @@ const AuditDetail = () => {
 
   const dispatch = useDispatch();
 
-  let { id } = useParams();
-
   useEffect(() => {
     dispatch(getAuditById(id));
   }, []);
+
+  useEffect(() => {
+    dispatch(getBuyerById(_auditReducer.audit.buyerId))
+  },[])
   const _auditReducer = useSelector((state) => state.audits);
+  console.log('_auditReducer', _auditReducer)
+  const _buyerReducer = useSelector((state) => state.buyers);
 
   const columns = [
     {
@@ -140,13 +141,13 @@ const AuditDetail = () => {
   return (
     <div className="bg-white rounded-3xl">
       <div className=" m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
-        <h5 class="text-xl font-bold dark:text-white">Document Detail</h5>
+        <h5 class="text-xl font-bold dark:text-white">Audit Detail</h5>
         <div className="ml-auto m-5">
           <Row gutter={[32, 24]}>
             <Col span={12}>
               {" "}
               <div className="text-md font-medium text-gray-900 p-3">
-                Doucment Name{" "}
+                Audit Name{" "}
                 <div className="text-gray-400">
                   {_auditReducer.audit.name}
                 </div>
@@ -155,15 +156,25 @@ const AuditDetail = () => {
             <Col span={12}>
               {" "}
               <div className="text-md font-medium text-gray-900 p-3">
-                Type{" "}
+                Customer{" "}
                 <div className="text-gray-400">
                   {" "}
-                  {_auditReducer.audit.name}{" "}
+                  {_buyerReducer.buyer.name}{" "}
+                </div>
+              </div>
+            </Col>
+            <Col span={12}>
+              {" "}
+              <div className="text-md font-medium text-gray-900 p-3">
+                Frequency{" "}
+                <div className="text-gray-400">
+                  {" "}
+                  {_auditReducer.audit.frequency}{" "}
                 </div>
               </div>
             </Col>
           </Row>
-          <Row gutter={[32, 24]}>
+          {/* <Row gutter={[32, 24]}>
             <Col span={24}>
               {" "}
               <div className="text-md font-medium text-gray-900 p-3">
@@ -250,7 +261,7 @@ const AuditDetail = () => {
                 ;{" "}
               </div>
             </Col>
-          </Row>
+          </Row> */}
         </div>
       </div>
       <Modal

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import Button from "@mui/material/Button";
 
@@ -12,14 +12,19 @@ import { Tooltip, Col, Row } from "@nextui-org/react";
 import { Header } from "../../components";
 import { SearchOutlined } from "@ant-design/icons";
 import moment from "moment";
-import { fetchAudits } from "../../redux";
+import { fetchAudits, getAuditById } from "../../redux";
 
 const AuditLanding = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  let { id } = useParams()
 
   useEffect(() => {
     dispatch(fetchAudits());
+  }, []);
+
+  useEffect(() => {
+    dispatch(getAuditById(id));
   }, []);
 
   const handleDelete = (doc) => {
@@ -160,7 +165,7 @@ const AuditLanding = () => {
 
   return (
     <div className=" m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
-      <Header category="Apps" title="Document" />
+      <Header category="Apps" title="Audit" />
       <div className="ml-auto m-5">
         <Button
           variant="contained"

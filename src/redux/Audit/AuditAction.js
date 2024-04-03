@@ -21,6 +21,14 @@ export const fetchAudits = () => {
   };
 };
 
+// export const updateCreatedRequirements = (createdRequirements) => {
+//   return (dispatch) => {
+//     dispatch({
+//       type: "UPDATE_CREATED_REQUIREMENTS",
+//       payload: createdRequirements,
+//     });
+//   };
+// };
 
 // export const deleteAudits = (audit) => {
 //   return (dispatch) => {
@@ -47,7 +55,7 @@ export const getAuditById = (id) => {
     dispatch({
       type: "GET_AUDIT_BY_ID",
       payload: new Promise((resolve, reject) => {
-        Axios.get(`${API_PATH}Audit/${id}`, {
+        Axios.get(`${API_PATH}audits/${id}`, {
           headers: { Authorization: "Bearer " + localStorage.getItem("Token") },
         })
           .then((res) => {
@@ -66,7 +74,7 @@ export const createAudit = (newDoucment) => {
     dispatch({
       type: "CREATE_AUDIT",
       payload: new Promise((resolve, reject) => {
-        Axios.post(`${API_PATH}Audit`, newDoucment, {
+        Axios.post(`${API_PATH}audits`, newDoucment, {
           headers: { Authorization: "Bearer " + localStorage.getItem("Token") },
         })
           .then((res) => {

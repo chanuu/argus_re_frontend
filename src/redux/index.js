@@ -14,6 +14,11 @@ export {
 } from "./Audit/AuditAction";
 
 export {
+  fetchBuyers,
+  getBuyerById
+} from "./Buyer/BuyerAction";
+
+export {
   fetchUsers,
   deleteUser,
   createUser,

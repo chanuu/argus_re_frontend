@@ -136,7 +136,7 @@ const App = () => {
                         path="/documents/create"
                         element={
                           <PrivateRoutes>
-                            <AuditCreate />
+                            <DocumentCreate/>
                           </PrivateRoutes>
                         }
                       />
@@ -144,7 +144,7 @@ const App = () => {
                         path="/documents/:id"
                         element={
                           <PrivateRoutes>
-                            <AuditDetail />
+                            <DocumentDetail />
                           </PrivateRoutes>
                         }
                       />
@@ -160,7 +160,7 @@ const App = () => {
                         path="/audits/create"
                         element={
                           <PrivateRoutes>
-                            <DocumentCreate />
+                            <AuditCreate />
                           </PrivateRoutes>
                         }
                       />
@@ -168,7 +168,7 @@ const App = () => {
                         path="/audits/:id"
                         element={
                           <PrivateRoutes>
-                            <DocumentDetail />
+                            <AuditDetail />
                           </PrivateRoutes>
                         }
                       />

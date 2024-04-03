@@ -3,6 +3,7 @@ const initialState = {
   audit: null,
   createStatus: false,
   deleteStatus: false,
+  createdRequirements: [],
 };
 
 const auditReducer = (state = initialState, action) => {
@@ -24,7 +25,8 @@ const auditReducer = (state = initialState, action) => {
       ...state,
       audit: action.payload,
     };
-  } else {
+  } 
+   else {
     return state;
   }
 };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchDocuments, deleteDocuments } from "../../redux";
+import { fetchDocuments, deleteDocuments, getDocumentById } from "../../redux";
 import Button from "@mui/material/Button";
 
 import { Table, Popconfirm, Input, Space } from "antd";
@@ -17,9 +17,14 @@ import moment from "moment";
 const DocumentLanding = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  let { id } = useParams();
 
   useEffect(() => {
     dispatch(fetchDocuments());
+  }, []);
+
+  useEffect(() => {
+    dispatch(getDocumentById(id));
   }, []);
 
   const handleDelete = (doc) => {
