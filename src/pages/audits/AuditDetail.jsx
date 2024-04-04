@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Col,
   Row,
@@ -6,24 +6,26 @@ import {
   Button,
   Modal,
   Form,
+  Input,
+  Typography,
   DatePicker,
+  Select,
   InputNumber,
 } from "antd";
+import { Header } from "../../components";
 
 import { IconButton } from "../General/IconButton";
 import { EyeIcon } from "../General/EyeIcon";
 import { EditIcon } from "../General/EditIcon";
 import { DeleteIcon } from "../General/DeleteIcon";
 import { Tooltip } from "@nextui-org/react";
-import { useParams } from "react-router-dom";
+import { Routes, Route, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
-
 import { getAuditById, getBuyerById } from "../../redux";
 
 const AuditDetail = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  let { id } = useParams();
   //format date using moment Js and render it in Anttable
   const getFormatDate = (date) => {
     let _date = moment(new Date(date));
@@ -63,36 +65,36 @@ const AuditDetail = () => {
 
   const dispatch = useDispatch();
 
+  let { id } = useParams();
+
   useEffect(() => {
     dispatch(getAuditById(id));
   }, []);
 
   useEffect(() => {
-    dispatch(getBuyerById(_auditReducer.audit.buyerId))
-  },[])
+    dispatch(getBuyerById(_auditReducer.audit.buyerId));
+  }, []);
+
   const _auditReducer = useSelector((state) => state.audits);
-  console.log('_auditReducer', _auditReducer)
   const _buyerReducer = useSelector((state) => state.buyers);
+  console.log('_auditReducer', _auditReducer)
 
   const columns = [
     {
-      title: "FromDate",
-      dataIndex: "fromDate",
-      key: "fromDate",
-      render: (date) => getFormatDate(date),
-    },
-    {
-      title: "ExpireDate",
-      dataIndex: "expireDate",
-      key: "expireDate",
-      render: (date) => getFormatDate(date),
+      title: "Name",
+      dataIndex: "documentName",
+      key: "documentName",
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
     },
-
+    {
+      title: "Valid Till",
+      dataIndex: "validUntil",
+      key: "validUntil",
+    },
     {
       title: "Action",
       dataIndex: "action",
@@ -120,14 +122,14 @@ const AuditDetail = () => {
               </Tooltip>
             </Col>
             <Col css={{ d: "flex" }}>
-              <Tooltip content="Edit Document">
+              <Tooltip content="Edit Audit">
                 <IconButton onClick={() => console.log("click")}>
                   <EditIcon size={20} fill="#979797" />
                 </IconButton>
               </Tooltip>
             </Col>
             <Col css={{ d: "flex" }}>
-              <Tooltip content="Delete Document" color="error">
+              <Tooltip content="Delete Audit" color="error">
                 <IconButton>
                   <DeleteIcon size={20} fill="#FF0080" />
                 </IconButton>
@@ -149,119 +151,44 @@ const AuditDetail = () => {
               <div className="text-md font-medium text-gray-900 p-3">
                 Audit Name{" "}
                 <div className="text-gray-400">
-                  {_auditReducer.audit.name}
+                  {_auditReducer.audit?.name}
                 </div>
               </div>
             </Col>
             <Col span={12}>
               {" "}
               <div className="text-md font-medium text-gray-900 p-3">
-                Customer{" "}
+                Customer Name{" "}
                 <div className="text-gray-400">
-                  {" "}
-                  {_buyerReducer.buyer.name}{" "}
+                  {_buyerReducer.buyer?.name}
                 </div>
               </div>
             </Col>
-            <Col span={12}>
+          </Row>
+          <Row gutter={[32, 24]}>
+            <Col span={24}>
               {" "}
               <div className="text-md font-medium text-gray-900 p-3">
                 Frequency{" "}
                 <div className="text-gray-400">
                   {" "}
-                  {_auditReducer.audit.frequency}{" "}
-                </div>
-              </div>
-            </Col>
-          </Row>
-          {/* <Row gutter={[32, 24]}>
-            <Col span={24}>
-              {" "}
-              <div className="text-md font-medium text-gray-900 p-3">
-                Decription{" "}
-                <div className="text-gray-400">
-                  {" "}
-                  {_auditReducer.audit.description}
+                  {_auditReducer.audit?.frequency}
                 </div>{" "}
               </div>
             </Col>
-          </Row>
-          <Row gutter={[32, 24]}>
-            <Col span={12}>
-              {" "}
-              <div className="text-md font-medium text-gray-900 p-3">
-                Issue Date{" "}
-                <div className="text-gray-400">
-                  {" "}
-                  {_auditReducer.audit.issueDate}
-                  <div />{" "}
-                </div>
-              </div>
-            </Col>
-            <Col span={12}>
-              {" "}
-              <div className="text-md font-medium text-gray-900 p-3">
-                AlertBefore{" "}
-                <div className="text-gray-400">
-                  {" "}
-                  {_auditReducer.audit.alertBefore}
-                </div>{" "}
-              </div>
-            </Col>
-          </Row>
-          <Row gutter={[32, 24]}>
-            <Col span={12}>
-              {" "}
-              <div className="text-md font-medium text-gray-900 p-3">
-                validPeriod{" "}
-                <div className="text-gray-400">
-                  {" "}
-                  {_auditReducer.audit.validPeriod}
-                </div>{" "}
-              </div>
-            </Col>
-            <Col span={12}>
-              {" "}
-              <div className="text-md font-medium text-gray-900 p-3">
-                Status
-                <div className="text-gray-400">
-                  {" "}
-                  <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300 p-3">
-                    {_auditReducer.audit.status}
-                  </span>
-                </div>{" "}
-              </div>
-            </Col>
-          </Row>
-
-          <Row gutter={[32, 24]}>
-            <div className="text-md font-medium text-gray-900 p-5">
-              <h6 class="text-md font-bold dark:text-white">
-                Document Renew Detail
-              </h6>
-            </div>
-            <div className="float-right w-full">
-              <Button
-                className="float-right bg-lime-600"
-                type="primary"
-                onClick={showModal}
-              >
-                Renew Document
-              </Button>
-            </div>
           </Row>
           <Row gutter={[32, 24]}>
             <Col span={24}>
               {" "}
               <div className="text-md font-medium text-gray-900 p-3">
                 <Table
-                  dataSource={_auditReducer.document.documentRenewal}
+                  dataSource={_auditReducer.audit.auditRequirements}
                   columns={columns}
                 />
                 ;{" "}
               </div>
             </Col>
-          </Row> */}
+          </Row>
         </div>
       </div>
       <Modal
