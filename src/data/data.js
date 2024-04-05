@@ -282,7 +282,7 @@ export const links = [
     title: 'App',
     links: [
       {
-        name: 'audit',
+        name: 'audits',
         icon: <AiOutlineAudit />,
       },
       {

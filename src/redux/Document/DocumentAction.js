@@ -68,7 +68,7 @@ export const getDocumentById = (id) => {
     dispatch({
       type: "GET_DOCUMENT_BY_ID",
       payload: new Promise((resolve, reject) => {
-        Axios.get(`${API_PATH}Documents/${id}`, {
+        Axios.get(`${API_PATH}documents/${id}`, {
           headers: { Authorization: "Bearer " + localStorage.getItem("Token") },
         })
           .then((res) => {

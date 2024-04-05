@@ -1,75 +1,89 @@
-import {React,useState,useEffect }from 'react';
-import '../App.css';
-import Landing from '../assets/loginn.jpg';
-import Eye from '../assets/eye.svg';
-import Google from '../assets/google.svg';
-import {Form,Input,Button} from 'antd'
-import { padding } from '@mui/system';
-import {logUser} from '../redux';
+import { React, useState, useEffect } from "react";
+import "../App.css";
+import Landing from "../assets/loginn.jpg";
+import Eye from "../assets/eye.svg";
+import Google from "../assets/google.svg";
+import { Form, Input, Button } from "antd";
+import { padding } from "@mui/system";
+import { logUser } from "../redux";
 import { useNavigate } from "react-router";
-import { useSelector, useDispatch } from 'react-redux';
-const LoginPage = () => {
-const dispatch = useDispatch();
-const navigate =  useNavigate()
+import { useSelector, useDispatch } from "react-redux";
 
-const _userReducer = useSelector((state) => state.users);
+const LoginPage = ({ toggleSidebarAndNavbar }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [isSidebarAndNavbarVisible, setIsSidebarAndNavbarVisible] = useState(true);
 
- const onFinish = (values)=>{
-  dispatch(logUser(values));
-  console.log('Success:', values);
- }
+  const _userReducer = useSelector((state) => state.users);
 
- const onFinishFailed = ()=>{
-  console.log("");
- }
+  const onFinish = (values) => {
+    dispatch(logUser(values));
+    console.log("Success:", values);
+  };
 
- useEffect(()=>{
-  if(_userReducer.login == true)  navigate('/') 
-  return () => { }
-},[ _userReducer.login ]) 
-  
+  const onFinishFailed = () => {
+    console.log("");
+  };
+
+  useEffect(() => {
+    if (_userReducer.login == true) navigate("/");
+    setIsSidebarAndNavbarVisible(false);
+    toggleSidebarAndNavbar();
+    return () => {};
+  }, [_userReducer.login]);
+
   return (
-    <section className="bg-gray-50 min-h-screen flex items-center justify-center">
+    <section className="bg-gray-50 min-h-screen w-full flex items-center justify-center">
       <div className="bg-gray-100 flex rounded-2xl shadow-lg max-w-3xl p-5 items-center">
         <div className="md:w-1/2 px-16">
           <h2 className="font-bold text-3xl text-[#002D74]">Login</h2>
           <p className="text-xs mt-4 text-[#002D74]">
             If you already a member, easily log in
           </p>
-   
+
           <Form
-    name="create"
-   
-    labelCol={{ span: 8 }}
-    wrapperCol={{ span: 16 }}
-    style={{ maxWidth: 800 }}
-    initialValues={{ remember: true }}
-    onFinish={onFinish}
-    onFinishFailed={onFinishFailed}
-    autoComplete="off"
-  >
-     <Form.Item
-    
-      name="username"
-      rules={[{ required: true, message: 'Please input UserName' }]}
-    >
-      <Input style={{width:'250px'}} placeholder='User Name' className="p-2 mt-8 rounded-xl border" />
-    </Form.Item>
+            name="create"
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
+            style={{ maxWidth: 800 }}
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+          >
+            <Form.Item
+              name="username"
+              rules={[{ required: true, message: "Please input UserName" }]}
+            >
+              <Input
+                style={{ width: "250px" }}
+                placeholder="User Name"
+                className="p-2 mt-8 rounded-xl border"
+              />
+            </Form.Item>
 
-    <Form.Item
-    
-    name="password"
-    rules={[{ required: true, message: 'Please input Password' }]}
-  >
-    <Input placeholder='Password' style={{width:'250px'}} type='password' className="p-2 mt-8 rounded-xl border" />
-  </Form.Item>
-  <Form.Item  >
-      <Button style={{width:'250px', padding:'5px',height:'40px' }}   className="bg-[#002D74] rounded-xl text-white py-2 hover:scale-105 duration-300" type="primary"  htmlType="submit">
-        Login
-      </Button>
-    </Form.Item>
-  </Form>
-
+            <Form.Item
+              name="password"
+              rules={[{ required: true, message: "Please input Password" }]}
+            >
+              <Input
+                placeholder="Password"
+                style={{ width: "250px" }}
+                type="password"
+                className="p-2 mt-8 rounded-xl border"
+              />
+            </Form.Item>
+            <Form.Item>
+              <Button
+                style={{ width: "250px", padding: "5px", height: "40px" }}
+                className="bg-[#002D74] rounded-xl text-white py-2 hover:scale-105 duration-300"
+                type="primary"
+                htmlType="submit"
+              >
+                Login
+              </Button>
+            </Form.Item>
+          </Form>
 
           <div className="mt-10 grid grid-cols-3 items-center text-gray-500">
             <hr className="border-gray-400"></hr>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchDocuments, deleteDocuments } from "../../redux";
+import { fetchDocuments, deleteDocuments, getDocumentById } from "../../redux";
 import Button from "@mui/material/Button";
 
 import { Table, Popconfirm, Input, Space } from "antd";
@@ -14,12 +14,17 @@ import { Header } from "../../components";
 import { SearchOutlined } from "@ant-design/icons";
 import moment from "moment";
 
-const Landing = () => {
+const DocumentLanding = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  let { id } = useParams();
 
   useEffect(() => {
     dispatch(fetchDocuments());
+  }, []);
+
+  useEffect(() => {
+    dispatch(getDocumentById(id));
   }, []);
 
   const handleDelete = (doc) => {
@@ -191,4 +196,4 @@ const Landing = () => {
   );
 };
 
-export default Landing;
+export default DocumentLanding;

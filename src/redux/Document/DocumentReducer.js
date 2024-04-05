@@ -1,6 +1,6 @@
 const initialState = {
   documents: [],
-  document: [],
+  document: null,
   documenttype: [],
   createStatus: false,
   deleteStatus: false,
