@@ -20,7 +20,8 @@ import {
 const { Title } = Typography;
 const { TextArea } = Input;
 const { Option } = Select;
-const Create = () => {
+
+const DocumentCreate = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -226,4 +227,4 @@ const Create = () => {
   );
 };
 
-export default Create;
+export default DocumentCreate;

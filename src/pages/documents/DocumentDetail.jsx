@@ -22,10 +22,9 @@ import { Tooltip } from "@nextui-org/react";
 import { Routes, Route, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
+import { getDocumentById } from "../../redux";
 
-import { getDocumentById, fetchExternalProviders } from "../../redux";
-
-const Detail = () => {
+const DocumentDetail = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   //format date using moment Js and render it in Anttable
   const getFormatDate = (date) => {
@@ -67,11 +66,13 @@ const Detail = () => {
   const dispatch = useDispatch();
 
   let { id } = useParams();
-
+  console.log('id', id)
   useEffect(() => {
     dispatch(getDocumentById(id));
   }, []);
+
   const _documentReducer = useSelector((state) => state.documents);
+  console.log('_documentReducer', _documentReducer)
 
   const columns = [
     {
@@ -148,7 +149,7 @@ const Detail = () => {
               <div className="text-md font-medium text-gray-900 p-3">
                 Doucment Name{" "}
                 <div className="text-gray-400">
-                  {_documentReducer.document.name}
+                  {_documentReducer.document?.name}
                 </div>
               </div>
             </Col>
@@ -324,4 +325,4 @@ const Detail = () => {
   );
 };
 
-export default Detail;
+export default DocumentDetail;

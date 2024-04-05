@@ -29,10 +29,11 @@ const userReducer = (state = initialState, action) => {
     localStorage.setItem("Token", action.payload.token);
     return {
       ...state,
-      user: action.payload.user,
+      user: action.payload,
       login: true,
     };
-  } else {
+  } 
+  else {
     return state;
   }
 };
