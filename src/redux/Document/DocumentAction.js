@@ -60,7 +60,9 @@ export const deleteDocuments = (document) => {
     });
   };
 };
-
+export const resetCreateStatus = () => ({
+  type: "RESET_CREATE_STATUS",
+});
 export const getDocumentById = (id) => {
   return (dispatch) => {
     dispatch({

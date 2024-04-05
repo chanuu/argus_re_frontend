@@ -35,6 +35,11 @@ const docuementReducer = (state = initialState, action) => {
       ...state,
       documenttype: action.payload,
     };
+  } else if (action.type == "RESET_CREATE_STATUS") {
+    return {
+      ...state,
+      createStatus: false,
+    };
   } else {
     return state;
   }

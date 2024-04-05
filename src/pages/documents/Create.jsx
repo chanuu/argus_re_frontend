@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { createDocument, fetchDocumentTypes } from "../../redux";
+import {
+  createDocument,
+  fetchDocumentTypes,
+  resetCreateStatus,
+} from "../../redux";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -38,19 +42,32 @@ const Create = () => {
     (state) => state.externalProviders
   );
   const _documentReducer = useSelector((state) => state.documents);
+  const [isDialogOpen, setIsDialogOpen] = useState(true);
+  const creationSuccess = useSelector((state) => state.documents.createStatus);
 
   const handleCreateDocument = (values) => {
     values.isExpired = false;
     values.status = 0;
-    values.tenantId = 2;
+    values.tenantId = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
+    values.Code = "0005";
 
     dispatch(createDocument(values));
-    navigate("/documents");
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+
+  // Effect to handle creation success
+  useEffect(() => {
+    if (creationSuccess) {
+      alert("Document Created Successfully!");
+      toast.success("Document Created Successfully!");
+      setIsDialogOpen(false); // Close dialog
+      dispatch(resetCreateStatus()); // Reset createStatus in global state
+      navigate("/documents");
+    }
+  }, [creationSuccess, dispatch, navigate]);
 
   const showSucessMessage = () => {
     if (_documentReducer.createStatus == true) {
@@ -87,7 +104,7 @@ const Create = () => {
 
             <Form.Item
               label="Type"
-              name="typeId"
+              name="documentTypeId"
               rules={[{ required: true, message: "Provider" }]}
             >
               <Select defaultValue="Select Type" style={{ width: "50%" }}>
@@ -111,7 +128,7 @@ const Create = () => {
 
             <Form.Item
               label="Description"
-              name="introduction"
+              name="description"
               rules={[
                 { required: true, message: "Please input Document Intro!" },
               ]}
